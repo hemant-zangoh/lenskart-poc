@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Lenskart with AI Agent</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="loading" id="loading">Loading...</div>
+
+    <button class="toggle-button hidden" id="toggle-button">
+      <svg viewBox="0 0 24 24">
+        <path
+          d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"
+        />
+      </svg>
+    </button>
+    <div class="container" id="container" style="display: none">
+      <iframe
+        id="frontend-iframe"
+        class="frontend-iframe"
+        src=""
+        title="Lenskart Frontend"
+      >
+      </iframe>
+
+      <iframe
+        id="agent-iframe"
+        class="agent-iframe hidden"
+        src=""
+        title="AI Agent"
+      >
+      </iframe>
+    </div>
+
+    <script>
+      // Set up environment configuration for browser
+      // In browser environment, we use window.ENV if set by server, otherwise defaults
+      window.CHAT_CONFIG = {
+        FRONTEND_URL: (window.ENV && window.ENV.FRONTEND_URL) || 'http://localhost:3000',
+        AGENT_URL: (window.ENV && window.ENV.AGENT_URL) || 'http://localhost:3001',
+        AGENT_EMBEDDED_URL: (window.ENV && window.ENV.AGENT_EMBEDDED_URL) || 'http://localhost:3001/embedded',
+        AGENT_SCRIPT_URL: (window.ENV && window.ENV.AGENT_SCRIPT_URL) || 'http://localhost:3001/hiddenframe.js'
+      };
+      
+      // Set iframe sources dynamically
+      document.addEventListener('DOMContentLoaded', function() {
+        const config = window.CHAT_CONFIG;
+        console.log('🔧 Setting iframe sources:', config);
+        document.getElementById('frontend-iframe').src = config.FRONTEND_URL;
+        document.getElementById('agent-iframe').src = config.AGENT_EMBEDDED_URL;
+        console.log('✅ Iframe sources set - Frontend:', config.FRONTEND_URL, 'Agent:', config.AGENT_EMBEDDED_URL);
+      });
+    </script>
+    <script src="./config.js"></script>
+    <script src="./script.js"></script>
+  </body>
+</html>
